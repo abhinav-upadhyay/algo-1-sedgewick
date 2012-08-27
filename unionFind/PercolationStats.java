@@ -49,14 +49,16 @@ public class PercolationStats {
 		
 		int N = Integer.parseInt(args[0]);
 		int T = Integer.parseInt(args[1]);
+		System.out.println(N + " " + T);
 		double count = 0.0;
 		PercolationStats ps = new PercolationStats(N, T);
 		for (int k = 0; k < T; k++) {
 			Percolation p = new Percolation(N);
 			while (p.percolates() != true) {
-				int index = StdRandom.uniform(1, N);
-				int i = index / N;
-				int j = index % N;
+				int index = StdRandom.uniform(N * N);
+				index++;
+				int i = index / N  ;
+				int j = index % N ; 
 				p.open(i, j);
 				count++;
 			}

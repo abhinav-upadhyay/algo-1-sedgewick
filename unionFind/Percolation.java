@@ -17,7 +17,7 @@ public class Percolation {
 				this.grid[i][j] = this.BLOCKED;
 			}
 		}
-		this.qf = new QuickFindUF(N);
+		this.qf = new QuickFindUF(N * N);
 	}
 	
 	private int getSize() {
@@ -25,11 +25,12 @@ public class Percolation {
 	}
 	
 	private void checkIndices(int i, int j) {
+		
 		if (i < 1 || i > this.getSize()) 
-			throw new IndexOutOfBoundsException();
+			throw new IndexOutOfBoundsException(i + " " + j);
 		
 		if (j < 1 || j > this.getSize())
-			throw new IndexOutOfBoundsException();
+			throw new IndexOutOfBoundsException(i + " " + j);
 	}
 	
 	private int translateIndices(int i, int j) {
@@ -42,18 +43,18 @@ public class Percolation {
 		j--;
 		this.grid[i][j] = this.OPEN;
 		
-		if (this.grid[i-1][j] == this.OPEN)
+		if ( i > 0 && this.grid[i-1][j] == this.OPEN)
 			this.qf.union(this.translateIndices(i - 1, j),
 					this.translateIndices(i, j));
 		
-		if (this.grid[i + 1][j] == this.OPEN)
+		if (i < this.getSize()  - 1 && this.grid[i + 1][j] == this.OPEN)
 			this.qf.union(this.translateIndices(i + 1, j),
 					this.translateIndices(i, j));
 		
-		if (this.grid[i][j - 1] == this.OPEN)
+		if (j > 0 && this.grid[i][j - 1] == this.OPEN)
 			this.qf.union(this.translateIndices(i, j - 1), this.translateIndices(i, j));
 		
-		if (this.grid[i][j + 1] == this.OPEN)
+		if (j < this.getSize() - 1 && this.grid[i][j + 1] == this.OPEN)
 			this.qf.union(this.translateIndices(i, j + 1), this.translateIndices(i, j));
 		
 	}
@@ -87,10 +88,12 @@ public class Percolation {
 		int N = this.getSize();
 		for (int lastRowIndex = N * (N - 1); lastRowIndex < N * N; lastRowIndex++) {
 			for (int firstRowIndex = 0; firstRowIndex < N; firstRowIndex++) {
+				System.out.println(lastRowIndex + " " + firstRowIndex);
 				if (this.qf.connected(lastRowIndex, firstRowIndex))
 					return true;
 				else
 					continue;
+					
 			}
 		}
 		return false;
