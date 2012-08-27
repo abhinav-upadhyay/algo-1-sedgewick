@@ -1,7 +1,6 @@
 import java.lang.Math;
 
 public class PercolationStats {
-	private Percolation p;
 	private int numExperiment;
 	private int size;
 	private double threshHold[];
@@ -12,8 +11,7 @@ public class PercolationStats {
 		
 		this.size = N;
 		this.numExperiment = T;
-		this.p = new Percolation(N);
-		this.threshHold = new double[N];
+		this.threshHold = new double[T];
 	}
 	
 	public int getSize() {
@@ -49,6 +47,28 @@ public class PercolationStats {
 	
 	public static void main(String[] args) {
 		
+		int N = Integer.parseInt(args[0]);
+		int T = Integer.parseInt(args[1]);
+		double count = 0.0;
+		PercolationStats ps = new PercolationStats(N, T);
+		for (int k = 0; k < T; k++) {
+			Percolation p = new Percolation(N);
+			while (p.percolates() != true) {
+				int index = StdRandom.uniform(1, N);
+				int i = index / N;
+				int j = index % N;
+				p.open(i, j);
+				count++;
+			}
+			ps.threshHold[k] = count / N;
+		}
+		
+		System.out.println("mean = " + StdStats.mean(ps.getThreshhold()));
+		System.out.println("stddev =" + StdStats.stddev(ps.getThreshhold()));
+	}
+
+	public double[] getThreshhold() {
+		return this.threshHold;
 	}
 	
 	
