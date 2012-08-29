@@ -34,7 +34,7 @@ public class Percolation {
 	}
 	
 	private int translateIndices(int i, int j) {
-		return i * j;
+		return (i * j);
 	}
 	
 	public void open(int i, int j) {
@@ -71,10 +71,11 @@ public class Percolation {
 	
 	public boolean isFull(int i, int j) {
 		checkIndices(i, j);
-		i--;
-		j--;
+		//i--;
+		//j--;
 		int index = this.translateIndices(i, j);
-		for (int firstRowIndex = 0; firstRowIndex < this.getSize(); firstRowIndex++) {
+		index--;
+		for (int firstRowIndex = 0; firstRowIndex < index; firstRowIndex++) {
 			if (this.qf.connected(firstRowIndex, index))
 				return true;
 			else
@@ -86,16 +87,20 @@ public class Percolation {
 	
 	public boolean percolates() {
 		int N = this.getSize();
-		for (int lastRowIndex = N * (N - 1); lastRowIndex < N * N; lastRowIndex++) {
-			for (int firstRowIndex = 0; firstRowIndex < N; firstRowIndex++) {
-				System.out.println(lastRowIndex + " " + firstRowIndex);
-				if (this.qf.connected(lastRowIndex, firstRowIndex))
+		//for (int lastRowIndex = N * (N - 1); lastRowIndex < N * N; lastRowIndex++) {
+			for (int firstRowIndex = 1; firstRowIndex <= N; firstRowIndex++) {
+				//System.out.println(lastRowIndex + " " + firstRowIndex);
+				/*if (this.qf.connected(lastRowIndex, firstRowIndex))
+					return true;
+				else
+					continue;*/
+				if (this.isFull(N, firstRowIndex))
 					return true;
 				else
 					continue;
 					
 			}
-		}
+		//}
 		return false;
 	}
 

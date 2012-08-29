@@ -50,19 +50,24 @@ public class PercolationStats {
 		int N = Integer.parseInt(args[0]);
 		int T = Integer.parseInt(args[1]);
 		System.out.println(N + " " + T);
-		double count = 0.0;
+		Percolation p1 = new Percolation(N);
+		System.out.println(p1.percolates());
+			
 		PercolationStats ps = new PercolationStats(N, T);
 		for (int k = 0; k < T; k++) {
 			Percolation p = new Percolation(N);
+			int count = 0;
 			while (p.percolates() != true) {
 				int index = StdRandom.uniform(N * N);
-				index++;
-				int i = index / N  ;
-				int j = index % N ; 
+				//index++;
+				int i = index / (N) + 1;
+				int j = index % (N) + 1; 
 				p.open(i, j);
-				count++;
+				count = count + 1;
+				System.out.println(count);
 			}
-			ps.threshHold[k] = count / N;
+			ps.threshHold[k] = count * 1.0 / N;
+			System.out.println(count);
 		}
 		
 		System.out.println("mean = " + StdStats.mean(ps.getThreshhold()));
