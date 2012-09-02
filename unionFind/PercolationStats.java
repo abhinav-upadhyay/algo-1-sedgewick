@@ -23,26 +23,11 @@ public class PercolationStats {
 	}
 	
 	public double mean() {
-		double mean = 0.0;
-		double sum = 0.0;
-		for (int i = 0; i < this.getSize(); i++ ) {
-			sum += this.threshHold[i];
-		}
-		mean = sum / this.getNumExperiment();
-		return mean;
+		return StdStats.mean(this.threshHold);
 	}
 	
 	public double stddev() {
-		double stddev = 0.0;
-		double mean = this.mean();
-		int size = this.getSize();
-		double sum = 0.0;
-		for (int i = 0; i < size; i++) {
-			sum += Math.pow(this.threshHold[i] - mean, 2.0);
-		}
-		
-		stddev = sum / (this.getNumExperiment() - 1);
-		return stddev;
+		return StdStats.stddevp(this.threshHold);
 	}
 	
 	public static void main(String[] args) {
@@ -57,17 +42,21 @@ public class PercolationStats {
 		for (int k = 0; k < T; k++) {
 			Percolation p = new Percolation(N);
 			int count = 0;
+			int table[] = new int[N*N];
 			while (p.percolates() != true) {
 				int index = StdRandom.uniform(N * N);
-				//index++;
-				int i = index / (N) + 1;
-				int j = index % (N) + 1; 
+				
+				if (table[index] == 1)
+						continue;
+				table[index] = 1;
+				
+				int i = index / (N);
+				int j = index % (N); 
 				p.open(i, j);
-				count = count + 1;
-				System.out.println(count);
+				count++;
 			}
-			ps.threshHold[k] = count * 1.0 / N;
-			System.out.println(count);
+			ps.threshHold[k] = (count * 1.0 )/ (N*N);
+			System.out.println(ps.threshHold[k]);
 		}
 		
 		System.out.println("mean = " + StdStats.mean(ps.getThreshhold()));
