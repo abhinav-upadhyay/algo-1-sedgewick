@@ -42,20 +42,21 @@ public class PercolationStats {
 		for (int k = 0; k < T; k++) {
 			Percolation p = new Percolation(N);
 			int count = 0;
-			int table[] = new int[N*N];
+			int table[][] = new int[N][N];
 			while (p.percolates() != true) {
-				int index = StdRandom.uniform(N * N);
+				int i = StdRandom.uniform(1, N + 1);
+				int j = StdRandom.uniform(1, N + 1);
 				
-				if (table[index] == 1)
+				
+				if (table[i-1][j-1] == 1)
 						continue;
-				table[index] = 1;
-				
-				int i = index / (N);
-				int j = index % (N); 
+				table[i-1][j-1] = 1;
+				//i++;
+				//j++;
 				p.open(i, j);
 				count++;
 			}
-			ps.threshHold[k] = (count * 1.0 )/ (N*N);
+			ps.threshHold[k] = (count * 1.0 )/ (N * N);
 			System.out.println(ps.threshHold[k]);
 		}
 		
