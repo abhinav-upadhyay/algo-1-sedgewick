@@ -1,37 +1,30 @@
 public class Percolation {
-	private QuickFindUF qf;
+	private WeightedQuickUnionUF qf;
 	private int size;
 	private int grid[][];
 	
-	public Percolation(int N) {
+	public Percolation(final int N) {
 		this.size = N;
-		this.qf = new QuickFindUF(N * N + 2);
+		this.qf = new WeightedQuickUnionUF(N * N + 2);
 		int i = 0;
 		this.grid = new int[N][N];
 		
 		for (i = 0; i < N; i++)
 			for (int j = 0; j < N; j++)
 				this.grid[i][j] = 0;
-		i = 0;
-		/*while (i < N)
-			qf.union(N * N, i++);
-		
-		for (i = N * (N -1) -1; i < N * N; i++)
-			qf.union(i, N * N + 1);*/
 	}
 	
-	private int translateIndex(int i, int j) {
+	private int translateIndex(final int i, final int j) {
 		int N = this.size;
 		return (i * N + j);
-		
 	}
 	
-	private void checkIndex(int i, int j) {
-		int N = this.size;
-		if (i < 1 || i > N)
+	private void checkIndex(final int i, final int j) {
+		int n = this.size;
+		if (i < 1 || i > n)
 			throw new IndexOutOfBoundsException(i + " " + j);
 		
-		if (j < 1 || j > N)
+		if (j < 1 || j > n)
 			throw new IndexOutOfBoundsException(i + " " + j);
 	}
 	
@@ -74,13 +67,6 @@ public class Percolation {
 		j--;
 		int N = this.size;
 		return (this.qf.connected(N * N + 1, translateIndex(i, j)));
-//		for (int k = 1; k < N; k++) {
-//			if (this.qf.connected(k, translateIndex(i, j)))
-//				return true;
-//			else
-//				continue;
-//		}
-//		return false;
 	}
 	
 	public boolean percolates() {

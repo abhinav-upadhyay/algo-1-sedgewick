@@ -31,7 +31,7 @@ public class PercolationStats {
 	}
 	
 	public static void main(String[] args) {
-		
+		long start = System.nanoTime();
 		int N = Integer.parseInt(args[0]);
 		int T = Integer.parseInt(args[1]);
 		System.out.println(N + " " + T);
@@ -49,26 +49,24 @@ public class PercolationStats {
 				
 				
 				if (table[i-1][j-1] == 1)
-						continue;
+					continue;
 				table[i-1][j-1] = 1;
-				//i++;
-				//j++;
 				p.open(i, j);
 				count++;
 			}
 			ps.threshHold[k] = (count * 1.0 )/ (N * N);
-			System.out.println(ps.threshHold[k]);
+			//System.out.println(ps.threshHold[k]);
 		}
-		
-		System.out.println("mean = " + StdStats.mean(ps.getThreshhold()));
-		System.out.println("stddev =" + StdStats.stddev(ps.getThreshhold()));
+		double mean = ps.mean();
+		double stddev = ps.stddev();
+		long end = System.nanoTime();
+		System.out.println(("mean = " + mean));
+		System.out.println(("stddev =" + stddev));
+		System.out.println((end - start) * Math.pow(10.0, -9.0) + " s");
 	}
 
 	public double[] getThreshhold() {
 		return this.threshHold;
 	}
 	
-	
-	
-
 }
